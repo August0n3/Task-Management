@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="JpbDataSourceConfig">
+    <data-source-infos>
+      <data-source-info id="4b21d949-4193-4a61-ae42-e31fe7cdd402" persistence-unit-name="gerenciadordetarefas:TaskUP" />
+    </data-source-infos>
+  </component>
+</project>

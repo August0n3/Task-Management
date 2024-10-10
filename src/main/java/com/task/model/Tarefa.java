@@ -23,10 +23,10 @@ public class Tarefa implements Serializable {
     private String descricao;
 
     @Column(nullable = false)
-    private String prioridade;
+    private Short prioridade;
 
     @Temporal(TemporalType.DATE)
-    @Column(name = "deadline", nullable = false)
+    @Column(name = "deadline")
     private Date deadLine;
 
     @ManyToOne
@@ -59,11 +59,11 @@ public class Tarefa implements Serializable {
         this.descricao = descricao;
     }
 
-    public String getPrioridade() {
+    public Short getPrioridade() {
         return prioridade;
     }
 
-    public void setPrioridade(String prioridade) {
+    public void setPrioridade(Short prioridade) {
         this.prioridade = prioridade;
     }
 
