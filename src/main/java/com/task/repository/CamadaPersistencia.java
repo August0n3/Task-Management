@@ -6,7 +6,8 @@ import com.task.model.Tarefa;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
-import java.sql.Date;
+
+import java.util.Calendar;
 
 public class CamadaPersistencia {
     public static void main(String[] args) {
@@ -21,19 +22,20 @@ public class CamadaPersistencia {
         Tarefas tarefas = new Tarefas(em); // Passando o EntityManager
 
         // Criando um funcionario
-        Funcionario augusto = new Funcionario();
-        augusto.setNome("Augusto");
+        Funcionario funcionario = funcionarios.findById(3L);
 
         // Criando uma tarefa
         Tarefa tarefa1 = new Tarefa();
         tarefa1.setTitulo("Tarefa 1");
         tarefa1.setDescricao("Tarefa 1");
-        tarefa1.setFuncionario(augusto);
+        tarefa1.setFuncionario(funcionario);
         tarefa1.setPrioridade((short) 1);
-        tarefa1.setDeadLine(new Date(20241212));
+        Calendar date = Calendar.getInstance();
+        date.set(2024,Calendar.DECEMBER,12);
+        tarefa1.setDeadLine(date);
 
         // Salvando funcionario
-        funcionarios.save(augusto);
+        tarefas.save(tarefa1);
         em.getTransaction().commit();
 
         em.close();

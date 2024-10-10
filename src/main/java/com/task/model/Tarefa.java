@@ -1,8 +1,8 @@
 package com.task.model;
 
 import javax.persistence.*;
-import  java.io.Serializable;
-import java.util.Date;
+import java.io.Serializable;
+import java.util.Calendar;
 import java.util.Objects;
 
 @Entity
@@ -27,7 +27,7 @@ public class Tarefa implements Serializable {
 
     @Temporal(TemporalType.DATE)
     @Column(name = "deadline")
-    private Date deadLine;
+    private Calendar deadLine;
 
     @ManyToOne
     @JoinColumn(name = "id_func")
@@ -67,11 +67,11 @@ public class Tarefa implements Serializable {
         this.prioridade = prioridade;
     }
 
-    public Date getDeadLine() {
+    public Calendar getDeadLine() {
         return deadLine;
     }
 
-    public void setDeadLine(Date deadLine) {
+    public void setDeadLine(Calendar deadLine) {
         this.deadLine = deadLine;
     }
 

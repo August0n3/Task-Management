@@ -11,6 +11,7 @@ import com.task.model.Funcionario;
 
 public class Funcionarios implements Serializable {
     private static final long serialVersionUID = 1L;
+
     @Inject
     private EntityManager manager;
 
