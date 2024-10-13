@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<ui:composition lang="ptbr" xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:f="http://xmlns.jcp.org/jsf/core"
+    xmlns:p = "http://primefaces.org/ui"
+    xmlns:ui = "http://xmlns.jcp.org/jsf/facelets"
+    template="WEB-INF/template/Layout.xhtml">
+
+
+<ui:define name="titulo">
+    Cadastro Tarefa
+</ui:define>
+
+<ui:define name="conteudo">
+
+    <f:metadata>
+        <f:viewAction action="#{gerenciadorDeTarefasBean.todasTarefas}"/>
+    </f:metadata>
+
+
+    <h:form id="frm">
+        <p:toolbar id="tol">
+            <f:facet name="left">
+                <p:inputText placeholder="Digite o titulo da tarefa"
+                    value="#{gerenciadorDeTarefasBean.termoPesquisaTitulo}"/>
+
+                <p:commandButton value="Pesquisar" icon="fa fa-search"
+                actionListener="#{gerenciadorDeTarefasBean.pesquisaTitulo}" update="tarefasDataTable"/>
+
+                <span class="ui-separator">
+                    <span class="ui-icon ui-icon-grip-dotted-vertical" />
+                </span>
+
+                <p:inputNumber placeholder="Digite o número da tarefa"
+                    value="#{gerenciadorDeTarefasBean.termoPesquisaId}"/>
+
+                <p:commandButton value="Pesquisar" icon="fa fa fa-search"
+                    actionListener="#{gerenciadorDeTarefasBean.pesquisaId}" update="tarefasDataTable"/>
+
+                <span class="ui-separator">
+                    <span class="ui-icon ui-icon-grip-dotted-vertical"/>
+                </span>
+
+                <p:outputLabel value="Prioridade" for="termoPesquisaPrioridade"/>
+                <p:selectOneMenu id="termoPesquisaPrioridade" value="#{gerenciadorDeTarefasBean.termoPesquisaPrioridade}">
+                <f:selectItem itemLabel="Selecione" itemValue="#{null}"/>
+                <f:selectItem itemLabel="Alta" itemValue="ALTA"/>
+                <f:selectItem itemLabel="Média" itemValue="MEDIA" />
+                <f:selectItem itemLabel="Baixa" itemValue="BAIXA" />
+                </p:selectOneMenu>
+
+                <p:commandButton value="Pesquisar" icon="fa fa fa-search"
+                                 actionListener="#{gerenciadorDeTarefasBean.pesquisaPrioridade}" update="tarefasDataTable"/>
+
+                <span class="ui-separator">
+                    <span class="ui-icon ui-icon-grip-dotted-vertical"/>
+                </span>
+
+                <p:outputLabel value="Responsável" for="funcionariopesq"/>
+                <p:selectOneMenu id="funcionariopesq" value="#{gerenciadorDeTarefasBean.termoPesquisaFuncionario}" >
+                    <f:selectItem itemLabel="Selecione" itemValue="#{null}" />
+                    <f:selectItems value="#{gerenciadorDeTarefasBean.listaFuncionarios}" var="func"
+                                   itemLabel="#{func}" itemValue="#{func}" />
+                </p:selectOneMenu>
+
+                <p:commandButton value="Pesquisar" icon="fa fa fa-search"
+                                 actionListener="#{gerenciadorDeTarefasBean.pesquisaFuncionario}" update="tarefasDataTable"/>
+
+                <span class="ui-separator">
+                    <span class="ui-icon ui-icon-grip-dotted-vertical"/>
+                </span>
+
+                <p:outputLabel value="Situação" for="termoPesquisaSituacao"/>
+                <p:selectOneMenu id="termoPesquisaSituacao" value="#{gerenciadorDeTarefasBean.termoPesquisaSituacao}">
+                    <f:selectItem itemLabel="Selecione " itemValue="#{null}"/>
+                    <f:selectItem itemLabel="Concluída" itemValue="true"/>
+                    <f:selectItem itemLabel="Em andamento" itemValue="false" />
+                </p:selectOneMenu>
+
+                <p:commandButton value="Pesquisar" icon="fa fa fa-search"
+                                 actionListener="#{gerenciadorDeTarefasBean.pesquisaSituacao}"
+                                 update="tarefasDataTable tol"/>
+
+                <span class="ui-separator">
+                    <span class="ui-icon ui-icon-grip-dotted-vertical"/>
+                </span>
+
+                <p:commandButton title="Nova Tarefa" value="Cadastrar" icon="fa fa-plus"
+                                 actionListener="#{gerenciadorDeTarefasBean.prepararNovaTarefa}"
+                                 oncomplete="PF('tarefaDialogWidgetVar').show()"
+                                 update="tarefasDialog" process="@this"/>
+
+
+
+                <p:commandButton title="Editar" value="Editar" icon="fa fa-edit"
+                                disabled="#{not gerenciadorDeTarefasBean.tarefaSelecionada}"
+                                oncomplete="PF('tarefaDialogWidgetVar').show()"
+                                update="tarefasDialog" process="@this"/>
+
+
+                <p:commandButton title="Concluir" value="Concluir" icon="fa fa-check"
+                            disabled="#{not gerenciadorDeTarefasBean.tarefaSelecionada}"
+                            actionListener="#{gerenciadorDeTarefasBean.concluir}"
+                            update="tarefasDataTable" process="@this"/>
+
+                <span class="ui-separator">
+                    <span class="ui-icon ui-icon-grip-dotted-vertical"/>
+                </span>
+
+                <p:commandButton title="Excluir" value="Excluir" icon="fa fa-trash"
+                        disabled="#{not gerenciadorDeTarefasBean.tarefaSelecionada}"
+                        actionListener="#{gerenciadorDeTarefasBean.excluir}"
+                        update="tarefasDataTable tol"/>
+
+                <span class="ui-separator">
+                    <span class="ui-icon ui-icon-grip-dotted-vertical"/>
+                </span>
+
+
+
+            </f:facet>
+
+
+        </p:toolbar>
+
+        <p:spacer height="20px"/>
+
+        <p:dataTable id="tarefasDataTable" value="#{gerenciadorDeTarefasBean.listaTarefas}"
+                    var="tarefa" emptyMessage="Nenhuma Tarefa Cadastrada"
+                    paginator="true" rows="15" paginatorPosition="bottom"
+                    selectionMode="single" selection="#{gerenciadorDeTarefasBean.tarefa}" rowKey="#{tarefa.id}">
+
+            <p:ajax event="rowSelect" update="frm:tol"/>
+
+            <p:ajax event="rowUnselect" update="frm:tol"/>
+
+            <p:column headerText="Número" sortBy="#{tarefa.id}">
+                <h:outputText value="#{tarefa.id}"/>
+            </p:column>
+            <p:column headerText="Titulo" sortBy="#{tarefa.titulo}">
+                <h:outputText value="#{tarefa.titulo}"/>
+            </p:column>
+            <p:column headerText="Descrição">
+                <h:outputText value="#{tarefa.descricao}"/>
+            </p:column>
+            <p:column headerText="Prioridade" sortBy="#{tarefa.prioridade}">
+                <h:outputText value="#{tarefa.prioridade}"/>
+            </p:column>
+            <p:column headerText="Responsável">
+                <h:outputText value="#{tarefa.funcionario}"/>
+            </p:column>
+
+        </p:dataTable>
+
+        <p:dialog id="tarefasDialog" header="Nova tarefa" widgetVar="tarefaDialogWidgetVar"
+                  modal="true" resizable="false" closeOnEscape="true">
+
+            <h:panelGrid id="tarefasPanelGrid" columns="2" rendered="#{gerenciadorDeTarefasBean.tarefa ne null}">
+                <p:outputLabel value="Titulo" for="titulo"/>
+                <p:inputText id="titulo" size="80" value="#{gerenciadorDeTarefasBean.tarefa.titulo}"/>
+
+                <p:outputLabel value="Descrição" for="descricao"/>
+                <p:inputText id="descricao" size="80" value="#{gerenciadorDeTarefasBean.tarefa.descricao}"/>
+
+                <p:outputLabel value="Prioridade" for="prioridade"/>
+                <p:selectOneMenu id="prioridade" value="#{gerenciadorDeTarefasBean.tarefa.prioridade}">
+                    <f:selectItem itemLabel="Selecione" itemValue="#{null}"/>
+                    <f:selectItems value="#{gerenciadorDeTarefasBean.prioridades}" var="valorPrioridade"
+                                   itemLabel="#{valorPrioridade.descricao}" itemValue="#{valorPrioridade}"/>
+                </p:selectOneMenu>
+
+                <p:outputLabel value="Deadline" for="deadline"/>
+                <p:calendar id="deadline" pattern="dd/MM/yyyy" value="#{gerenciadorDeTarefasBean.tarefa.deadLine}"/>
+
+                <p:outputLabel value="Responsável" for="funcionario"/>
+                <p:selectOneMenu id="funcionario" value="#{gerenciadorDeTarefasBean.tarefa.funcionario}" required="true">
+                    <f:selectItem itemLabel="Selecione" itemValue="#{null}" />
+                    <f:selectItems value="#{gerenciadorDeTarefasBean.listaFuncionarios}" var="func"
+                                   itemLabel="#{func}" itemValue="#{func}" />
+                </p:selectOneMenu>
+
+
+                <p:commandButton value="Salvar"
+                                 actionListener="#{gerenciadorDeTarefasBean.salvar}"
+                                 update="tarefasDataTable tarefasPanelGrid"
+                                 process="tarefasDialog"
+                                 oncomplete="PF('tarefaDialogWidgetVar').hide()"/>
+            </h:panelGrid>
+        </p:dialog>
+
+    </h:form>
+
+
+
+</ui:define>
+</ui:composition>

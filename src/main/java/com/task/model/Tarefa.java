@@ -2,7 +2,7 @@ package com.task.model;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Calendar;
+import java.util.Date;
 import java.util.Objects;
 
 @Entity
@@ -16,24 +16,26 @@ public class Tarefa implements Serializable {
     @Column(name = "id", unique = true, nullable = false)
     private Long id;
 
-    @Column(nullable = false)    
+    @Column(nullable = false)
     private String titulo;
 
     @Column(length = 255)
     private String descricao;
 
+    @Column
+    private boolean situacao = false;
+
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private Short prioridade;
+    private ValorPrioridade prioridade;
 
     @Temporal(TemporalType.DATE)
     @Column(name = "deadline")
-    private Calendar deadLine;
-
-    @ManyToOne
-    @JoinColumn(name = "id_func")
-    private Funcionario funcionario;
+    private Date deadLine;
 
 
+    @Column
+    private String funcionario;
 
     public Long getId() {
         return id;
@@ -59,29 +61,38 @@ public class Tarefa implements Serializable {
         this.descricao = descricao;
     }
 
-    public Short getPrioridade() {
+    public ValorPrioridade getPrioridade() {
         return prioridade;
     }
 
-    public void setPrioridade(Short prioridade) {
+    public void setPrioridade(ValorPrioridade prioridade) {
         this.prioridade = prioridade;
     }
 
-    public Calendar getDeadLine() {
+    public Date getDeadLine() {
         return deadLine;
     }
 
-    public void setDeadLine(Calendar deadLine) {
+    public void setDeadLine(Date deadLine) {
         this.deadLine = deadLine;
     }
 
-    public Funcionario getFuncionario() {
+    public String getFuncionario() {
         return funcionario;
     }
 
-    public void setFuncionario(Funcionario funcionario) {
+    public void setFuncionario(String funcionario) {
         this.funcionario = funcionario;
     }
+
+    public boolean GetSituacao() {
+        return situacao;
+    }
+
+    public void setSituacao(boolean situacao) {
+        this.situacao = situacao;
+    }
+
 
     @Override
     public boolean equals(Object o) {
@@ -95,19 +106,8 @@ public class Tarefa implements Serializable {
     public int hashCode() {
         return Objects.hashCode(getId());
     }
-
-    @Override
-    public String toString() {
-        return "Tarefa{" +
-                "id=" + id +
-                ", titulo='" + titulo + '\'' +
-                ", descricao='" + descricao + '\'' +
-                ", prioridade='" + prioridade + '\'' +
-                ", deadLine=" + deadLine +
-                ", funcionario=" + funcionario +
-                '}';
-    }
 }
+
 
 
 
