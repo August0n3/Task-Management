@@ -14,11 +14,11 @@ gerenciadordetarefas/
 ├── pom.xml
 ├── src/
     ├── main/
-    │   ├── java/
-    │   └── webapp/
-    │       ├── WEB-INF/
-    │       └── GerenciadorDeTarefas.xhtml
-    └── test/
+       ├── java/
+       └── webapp/
+           ├── WEB-INF/
+           └── GerenciadorDeTarefas.xhtml
+    
 ```
 
 ## Tecnologias Utilizadas
